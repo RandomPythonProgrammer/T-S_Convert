@@ -1,0 +1,16 @@
+{
+    "manifest_version": 2,
+    "version": "1.0.0",
+    "name": "T-S_Convert",
+
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content.js"]
+        }
+    ],
+
+    "web_accessible_resources": [
+        "./dict.json"
+    ]
+}
