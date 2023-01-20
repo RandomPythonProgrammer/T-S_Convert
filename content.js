@@ -1,37 +1,47 @@
 let path = browser.runtime.getURL("./dict.json");
-let data = undefined;
+let dict = undefined;
 let ready = false;
 
 fetch(path).then((file) => {
     file.json().then((json) => {
-        data = json;
+        dict = json;
+
+        let configuration = {
+            "attributes": true,
+            "childList": true,
+            "subtree": true
+        };
+        
+        if (document.innerHTML != null){
+            replace(document);
+        }
+
+        let observer = new MutationObserver((mutations, observer) => {
+            for (let mutation of mutations){
+                if (!mutation.target.classList.contains("translated")){
+                    replace(mutation.target);
+                    mutation.target.classList.add("translated");
+                }
+            }
+        });
+        
+        observer.observe(document, configuration);
     });
 });
-
-recursiveReplace(document);
 
 function replaceMatches(input){
     let array = input.split("");
     for (let i = 0; i < array.length; i++){
         let char = array[i];
-        if (dict.hasOwn(char)){
+        if (dict.hasOwnProperty(char)){
             array[i] = dict[char];
         }
     }
+    return array.join('');
 }
 
-function recursiveReplace(element){
-    if (element.childNodes.length == 0){
-        console.log(eleemnt);
-        console.log(element.innerHtml);
-    }
-    if (element.childNodes.length == 0 && element.innerHtml != undefined){
-        console.log(element.innerHtml);
-        element.innerHtml = replaceMatches(element.innerHtml);
-        console.log(element.innerHtml);
-        return;
-    }
-    for (let child of element.childNodes) {
-        recursiveReplace(child);
-    }
+function replace(element){
+    console.log(element);
+    console.log(element.innerHTML);
+    element.innerHTML = replaceMatches(element.innerHTML);
 }
