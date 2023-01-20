@@ -41,7 +41,5 @@ function replaceMatches(input){
 }
 
 function replace(element){
-    console.log(element);
-    console.log(element.innerHTML);
     element.innerHTML = replaceMatches(element.innerHTML);
 }

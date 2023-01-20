@@ -12,5 +12,11 @@
 
     "web_accessible_resources": [
         "./dict.json"
-    ]
+    ],
+
+    "browser_specific_settings": {
+        "gecko": {
+          "id": "T-S_Convert@example.com"
+        }
+      }
 }
