@@ -1,7 +1,8 @@
 {
     "manifest_version": 2,
-    "version": "1.0.2",
+    "version": "2.0.0",
     "name": "T-S_Convert",
+    "description": "Translates Traditional to Simplified Chinese",
 
     "content_scripts": [
         {
@@ -30,7 +31,6 @@
     },
 
     "permissions": [
-        "storage",
-        "tabs"
+        "storage"
     ]
 }
