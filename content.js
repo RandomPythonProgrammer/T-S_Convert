@@ -1,32 +1,31 @@
-let path = browser.runtime.getURL("./dict.json");
+let path = browser.runtime.getURL("dict.json");
 let dict = undefined;
 let ready = false;
-
-fetch(path).then((file) => {
-    file.json().then((json) => {
-        dict = json;
-
-        let configuration = {
-            "attributes": true,
-            "childList": true,
-            "subtree": true
-        };
+browser.storage.sync.get("on").then((value) => {
+    if (value["on"]) {
+        fetch(path).then((file) => {
+            file.json().then((json) => {
+                dict = json;
         
-        if (document.innerHTML != null){
-            replace(document);
-        }
-
-        let observer = new MutationObserver((mutations, observer) => {
-            for (let mutation of mutations){
-                if (!mutation.target.classList.contains("translated")){
-                    replace(mutation.target);
-                    mutation.target.classList.add("translated");
+                let configuration = {
+                    "childList": true,
+                    "subtree": true
+                };
+                
+                if (document.innerHTML != null){
+                    replace(document);
                 }
-            }
-        });
         
-        observer.observe(document, configuration);
-    });
+                let observer = new MutationObserver((mutations, observer) => {
+                    for (let mutation of mutations){
+                        replace(mutation.target);
+                    }
+                });
+                
+                observer.observe(document, configuration);
+            });
+        });
+    }
 });
 
 function replaceMatches(input){
@@ -41,5 +40,13 @@ function replaceMatches(input){
 }
 
 function replace(element){
-    element.innerHTML = replaceMatches(element.innerHTML);
+    if (element.children.length == 0 && !element.classList.contains("translated")) {
+        element.classList.add("translated");
+        element.textContent = replaceMatches(element.textContent);
+    } else {
+        for (let child of element.children){
+            replace(child);
+        }
+    }
 }
+

@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "version": "1.0.0",
+    "version": "1.0.2",
     "name": "T-S_Convert",
 
     "content_scripts": [
@@ -11,12 +11,26 @@
     ],
 
     "web_accessible_resources": [
-        "./dict.json"
+        "dict.json"
     ],
 
     "browser_specific_settings": {
         "gecko": {
           "id": "T-S_Convert@example.com"
         }
-      }
+    },
+
+    "browser_action": {
+        "default_popup": "popup/popup.html"
+    },
+
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+
+    "permissions": [
+        "storage",
+        "tabs"
+    ]
 }
